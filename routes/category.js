@@ -9,11 +9,28 @@ router.get('/all', async (req, res, next) => {
     res.send(results).status(200);
 });
 
+router.delete('/:id', async (req, res, next) => {
+    let id = req.params.id;
+    let results = await db.category.deleteOne({_id: id});
+    res.send(results).status(200);
+});
+
+router.delete('/delete/all', async (req, res, next) => {
+    let results = await db.category.deleteMany({});
+    res.send(results).status(200);
+});
+
 router.post("/", async (req, res, next) => {
     let newCat = req.body;
-    console.log(newCat);
     let result = new db.category(newCat);
     await result.save();
+    res.send(result).status(204);
+});
+
+router.put("/:id", async (req, res, next) => {
+    let newCat = req.body;
+    let id = req.params.id;
+    let result = await db.category.findByIdAndUpdate(id, newCat);
     res.send(result).status(204);
 });
 
